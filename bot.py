@@ -317,7 +317,7 @@ TLS_PROFILES = [
 
 # ── Auto-filter: probe each impersonate value by actually creating a Session ──
 def _probe_impersonate(val: str) -> bool:
-    """Return True if curl_cffi accepts this impersonate string."""
+    """Return True if curl_cffi accepts this impersonate string (Session creation)."""
     try:
         cffi_requests.Session(impersonate=val)
         return True
@@ -336,7 +336,7 @@ else:
 if not TLS_PROFILES:
     raise RuntimeError("No valid TLS profiles found.")
 
-# Pick best validation profile using priority order
+# Ordered preference list for proxy-validation profile selection
 _VALIDATE_PRIORITY = (
     "chrome133a", "chrome133", "chrome132", "chrome131",
     "chrome130", "chrome129", "chrome124", "chrome120",
@@ -344,11 +344,12 @@ _VALIDATE_PRIORITY = (
     "safari_ios_18_1_1", "safari15_5",
 )
 _active_impersonates = {p["impersonate"] for p in TLS_PROFILES}
-_VALIDATE_PROFILE = next(
-    (imp for imp in _VALIDATE_PRIORITY if imp in _active_impersonates),
-    TLS_PROFILES[0]["impersonate"]
-)
-print(f"[profiles] {len(TLS_PROFILES)} active profiles (curl_cffi). Validation: {_VALIDATE_PROFILE}")
+# All candidates in priority order (for runtime fallback in validate_proxy)
+_VALIDATE_CANDIDATES = [
+    imp for imp in _VALIDATE_PRIORITY if imp in _active_impersonates
+] or [TLS_PROFILES[0]["impersonate"]]
+print(f"[profiles] {len(TLS_PROFILES)} active profiles (curl_cffi). "
+      f"Validation candidates: {_VALIDATE_CANDIDATES[:3]}")
 
 _PROXY_TEST_ENDPOINTS = [
     ("https://api.ipify.org?format=json", "json", "ip"),
@@ -371,21 +372,28 @@ def validate_proxy(proxy_str):
     proxies = {"http": proxy_url, "https": proxy_url}
     last_err = "All test endpoints failed."
     for url, fmt, key in _PROXY_TEST_ENDPOINTS:
-        try:
-            session = cffi_requests.Session(impersonate=_VALIDATE_PROFILE)
-            r = session.get(url, proxies=proxies, timeout=12)
-            if r.status_code == 200:
-                if fmt == "json":
-                    ip = r.json().get(key, r.text.strip())
+        for imp in _VALIDATE_CANDIDATES:
+            try:
+                session = cffi_requests.Session(impersonate=imp)
+                r = session.get(url, proxies=proxies, timeout=12)
+                if r.status_code == 200:
+                    if fmt == "json":
+                        ip = r.json().get(key, r.text.strip())
+                    else:
+                        ip = r.text.strip().split()[0]
+                    if ip:
+                        return True, ip
+                    last_err = f"Empty response from {url}"
                 else:
-                    ip = r.text.strip().split()[0]   # strip trailing newline/whitespace
-                if ip:
-                    return True, ip
-                last_err = f"Empty response from {url}"
-            else:
-                last_err = f"HTTP {r.status_code} from {url}"
-        except Exception as e:
-            last_err = str(e)
+                    last_err = f"HTTP {r.status_code} from {url}"
+                break  # got a real HTTP response (even non-200) — don't try more profiles
+            except Exception as e:
+                err_s = str(e)
+                if "not supported" in err_s.lower() or "impersonat" in err_s.lower():
+                    last_err = err_s
+                    continue  # this profile can't do TLS — try next candidate
+                last_err = err_s
+                break  # real network error — move on to next endpoint
     return False, last_err
 
 
