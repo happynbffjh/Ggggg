@@ -29,13 +29,12 @@ try:
 except Exception:
     HAS_REQUESTS = False
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
-if not BOT_TOKEN:
-    raise RuntimeError(
-        "BOT_TOKEN environment variable is not set.\n"
-        "Get a token from @BotFather on Telegram and set it as BOT_TOKEN."
-    )
+BOT_TOKEN = "7908677074:AAHgRx4MaaBpTFOAU9WmS9QqD3XjsKmTDbw"  # Replace with your actual token
 
+# Remove the error check or keep it optional:
+if not BOT_TOKEN:
+    raise RuntimeError("BOT_TOKEN not set")
+    
 bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 
 user_settings = {}
