@@ -115,241 +115,218 @@ _CH = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/we
 _FF = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8"
 _SF = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
-# ── TLS Profiles — all 46 valid curl_cffi impersonate values ─────────────────
-_CH_HDR = ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"]
+# ── TLS Profiles — all valid curl_cffi BrowserType enum values ────────────────
+# Rule: impersonate strings MUST be in the BrowserType enum.
+# Session(impersonate=val) silently accepts ANY string; actual crash happens on
+# the first real request with "Impersonating X is not supported".
+_CH_HDR  = ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie"]
 _CH_HDRA = ["host","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","upgrade-insecure-requests","user-agent","accept","sec-fetch-site","sec-fetch-mode","sec-fetch-user","sec-fetch-dest","referer","accept-encoding","accept-language","cookie","priority"]
-_FF_HDR = ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","priority","cookie"]
-_SF_HDR = ["host","accept","sec-fetch-site","sec-fetch-dest","accept-language","sec-fetch-mode","user-agent","referer","accept-encoding","cookie"]
-_SF_IOS = ["host","sec-fetch-dest","user-agent","accept","referer","sec-fetch-site","sec-fetch-mode","accept-language","priority","accept-encoding","cookie"]
+_FF_HDR  = ["host","user-agent","accept","accept-language","accept-encoding","referer","connection","upgrade-insecure-requests","sec-fetch-dest","sec-fetch-mode","sec-fetch-site","sec-fetch-user","priority","cookie"]
+_SF_HDR  = ["host","accept","sec-fetch-site","sec-fetch-dest","accept-language","sec-fetch-mode","user-agent","referer","accept-encoding","cookie"]
+_SF_IOS  = ["host","sec-fetch-dest","user-agent","accept","referer","sec-fetch-site","sec-fetch-mode","accept-language","priority","accept-encoding","cookie"]
 TLS_PROFILES = [
-    # ── Chrome (newest → oldest) ──────────────────────────────────────────────
-    {"name":"Chrome 133a (Windows)","identifier":"chrome_133a","impersonate":"chrome133a","header_order":_CH_HDRA,
+    # ── Chrome desktop ────────────────────────────────────────────────────────
+    {"name":"Chrome 142 (Windows)","impersonate":"chrome142","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="8"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 136 (Windows)","impersonate":"chrome136","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+     "sec_ch_ua":'"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Chrome 133a (Windows)","impersonate":"chrome133a","header_order":_CH_HDRA,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 133 (macOS)","identifier":"chrome_133_mac","impersonate":"chrome133","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',"sec_ch_ua_platform":'"macOS"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 132 (Windows)","identifier":"chrome_132","impersonate":"chrome132","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 131 (Windows)","identifier":"chrome_131","impersonate":"chrome131","header_order":_CH_HDRA,
+    {"name":"Chrome 131 (Windows)","impersonate":"chrome131","header_order":_CH_HDRA,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 130 (Windows)","identifier":"chrome_130","impersonate":"chrome130","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+    {"name":"Chrome 131 (Android)","impersonate":"chrome131_android","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
+     "sec_ch_ua":'"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',"sec_ch_ua_platform":'"Android"',"sec_ch_ua_mobile":"?1",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 129 (Windows)","identifier":"chrome_129","impersonate":"chrome129","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 128 (Windows)","identifier":"chrome_128","impersonate":"chrome128","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 127 (Windows)","identifier":"chrome_127","impersonate":"chrome127","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 126 (Windows)","identifier":"chrome_126","impersonate":"chrome126","header_order":_CH_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-     "sec_ch_ua":'"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
-     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 124 (macOS)","identifier":"chrome_124","impersonate":"chrome124","header_order":_CH_HDR,
+    {"name":"Chrome 124 (macOS)","impersonate":"chrome124","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',"sec_ch_ua_platform":'"macOS"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 123 (Windows)","identifier":"chrome_123","impersonate":"chrome123","header_order":_CH_HDR,
+    {"name":"Chrome 123 (Windows)","impersonate":"chrome123","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 120 (Windows)","identifier":"chrome_120","impersonate":"chrome120","header_order":_CH_HDR,
+    {"name":"Chrome 120 (Windows)","impersonate":"chrome120","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 119 (Windows)","identifier":"chrome_119","impersonate":"chrome119","header_order":_CH_HDR,
+    {"name":"Chrome 119 (Windows)","impersonate":"chrome119","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Chrome 116 (Windows)","identifier":"chrome_116","impersonate":"chrome116","header_order":_CH_HDR,
+    {"name":"Chrome 116 (Windows)","impersonate":"chrome116","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 110 (Windows)","identifier":"chrome_110","impersonate":"chrome110","header_order":_CH_HDR,
+    {"name":"Chrome 110 (Windows)","impersonate":"chrome110","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 107 (Windows)","identifier":"chrome_107","impersonate":"chrome107","header_order":_CH_HDR,
+    {"name":"Chrome 107 (Windows)","impersonate":"chrome107","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="107", "Not=A?Brand";v="24", "Google Chrome";v="107"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 104 (Windows)","identifier":"chrome_104","impersonate":"chrome104","header_order":_CH_HDR,
+    {"name":"Chrome 104 (Windows)","impersonate":"chrome104","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
      "sec_ch_ua":'"Chromium";v="104", " Not A;Brand";v="99", "Google Chrome";v="104"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 101 (Windows)","identifier":"chrome_101","impersonate":"chrome101","header_order":_CH_HDR,
+    {"name":"Chrome 101 (Windows)","impersonate":"chrome101","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36",
      "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 100 (Windows)","identifier":"chrome_100","impersonate":"chrome100","header_order":_CH_HDR,
+    {"name":"Chrome 100 (Windows)","impersonate":"chrome100","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Safari/537.36",
      "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Chrome 99 (Windows)","identifier":"chrome_99","impersonate":"chrome99","header_order":_CH_HDR,
+    {"name":"Chrome 99 (Windows)","impersonate":"chrome99","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.0.0 Safari/537.36",
      "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Chrome 99 (Android)","impersonate":"chrome99_android","header_order":_CH_HDR,
+     "user_agent":"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.0.0 Mobile Safari/537.36",
+     "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',"sec_ch_ua_platform":'"Android"',"sec_ch_ua_mobile":"?1",
+     "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
     # ── Edge ─────────────────────────────────────────────────────────────────
-    {"name":"Edge 132 (Windows)","identifier":"edge_132","impersonate":"edge101","header_order":_CH_HDRA,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0",
-     "sec_ch_ua":'"Microsoft Edge";v="132", "Chromium";v="132", "Not A(Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
+    {"name":"Edge 131 (Windows)","impersonate":"edge101","header_order":_CH_HDRA,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+     "sec_ch_ua":'"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Edge 99 (Windows)","identifier":"edge_99","impersonate":"edge99","header_order":_CH_HDR,
+    {"name":"Edge 99 (Windows)","impersonate":"edge99","header_order":_CH_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.0.0 Safari/537.36 Edg/99.0.0.0",
      "sec_ch_ua":'" Not A;Brand";v="99", "Chromium";v="99", "Microsoft Edge";v="99"',"sec_ch_ua_platform":'"Windows"',"sec_ch_ua_mobile":"?0",
      "accept_nav":_CH,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
     # ── Firefox ──────────────────────────────────────────────────────────────
-    {"name":"Firefox 135 (Windows)","identifier":"firefox_135","impersonate":"firefox135","header_order":_FF_HDR,
+    {"name":"Firefox 144 (Windows)","impersonate":"firefox144","header_order":_FF_HDR,
+     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br, zstd"},
+    {"name":"Firefox 135 (Windows)","impersonate":"firefox135","header_order":_FF_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Firefox 133 (Windows)","identifier":"firefox_133","impersonate":"firefox133","header_order":_FF_HDR,
+    {"name":"Firefox 133 (Windows)","impersonate":"firefox133","header_order":_FF_HDR,
      "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br, zstd"},
-    {"name":"Firefox 123 (Windows)","identifier":"firefox_123","impersonate":"firefox123","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 120 (Windows)","identifier":"firefox_120","impersonate":"firefox120","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 117 (Windows)","identifier":"firefox_117","impersonate":"firefox117","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:117.0) Gecko/20100101 Firefox/117.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 109 (Windows)","identifier":"firefox_109","impersonate":"firefox109","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 102 (Windows)","identifier":"firefox_102","impersonate":"firefox102","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 100 (Windows)","identifier":"firefox_100","impersonate":"firefox100","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_FF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 98 (Windows)","identifier":"firefox_98","impersonate":"firefox98","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-     "accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
-    {"name":"Firefox 91 ESR (Windows)","identifier":"firefox_91esr","impersonate":"firefox91esr","header_order":_FF_HDR,
-     "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-     "accept_api":"*/*","accept_lang":"en-US,en;q=0.5","accept_encoding":"gzip, deflate, br"},
     # ── Safari macOS ─────────────────────────────────────────────────────────
-    {"name":"Safari 18.2 (macOS)","identifier":"safari_18_2","impersonate":"safari18_2","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 15_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
+    {"name":"Safari 26.0.1 (macOS)","impersonate":"safari2601","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 15_0_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 18.0 (macOS)","identifier":"safari_18","impersonate":"safari18","header_order":_SF_HDR,
+    {"name":"Safari 26.0 (macOS)","impersonate":"safari260","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 15_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 18.4 (macOS)","impersonate":"safari184","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 18.0 (macOS)","impersonate":"safari18_0","header_order":_SF_HDR,
      "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 17.5 (macOS)","identifier":"safari_17_5","impersonate":"safari17_5","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 17.4.1 (macOS)","identifier":"safari_17_4_1","impersonate":"safari17_4_1","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 17.2.1 (macOS)","identifier":"safari_17_2_1","impersonate":"safari17_2_1","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 17.0 (macOS)","identifier":"safari_17_0","impersonate":"safari17_0","header_order":_SF_HDR,
+    {"name":"Safari 17.0 (macOS)","impersonate":"safari17_0","header_order":_SF_HDR,
      "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 16.5 (macOS)","identifier":"safari_16_5","impersonate":"safari16_5","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15",
+    {"name":"Safari 17.0b (macOS)","impersonate":"safari170","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 16.0 (macOS)","identifier":"safari_16","impersonate":"safari16","header_order":_SF_HDR,
-     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
-     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 15.5 (macOS)","identifier":"safari_15_5","impersonate":"safari15_5","header_order":_SF_HDR,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-GB,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 15.5 (macOS)","impersonate":"safari15_5","header_order":_SF_HDR,
      "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari 15.3 (macOS)","identifier":"safari_15_3","impersonate":"safari15_3","header_order":_SF_HDR,
+    {"name":"Safari 15.5b (macOS)","impersonate":"safari155","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-GB,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 15.3 (macOS)","impersonate":"safari15_3","header_order":_SF_HDR,
      "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari 15.3b (macOS)","impersonate":"safari153","header_order":_SF_HDR,
+     "user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-GB,en;q=0.9","accept_encoding":"gzip, deflate, br"},
     # ── Safari iOS ───────────────────────────────────────────────────────────
-    {"name":"Safari iOS 18.1.1","identifier":"safari_ios_18_1_1","impersonate":"safari_ios_18_1_1","header_order":_SF_IOS,
-     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1",
+    {"name":"Safari iOS 26.0","impersonate":"safari260_ios","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari iOS 17.4.1","identifier":"safari_ios_17_4_1","impersonate":"safari_ios_17_4_1","header_order":_SF_IOS,
-     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1",
+    {"name":"Safari iOS 18.4","impersonate":"safari184_ios","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari iOS 17.2","identifier":"safari_ios_17_2","impersonate":"safari_ios_17_2","header_order":_SF_IOS,
+    {"name":"Safari iOS 18.0","impersonate":"safari18_0_ios","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari iOS 17.2","impersonate":"safari17_2_ios","header_order":_SF_IOS,
      "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
      "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
-    {"name":"Safari iOS 16.5","identifier":"safari_ios_16_5","impersonate":"safari_ios_16_5","header_order":_SF_IOS,
-     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
+    {"name":"Safari iOS 17.2b","impersonate":"safari172_ios","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
      "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
-     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-US,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-GB,en;q=0.9","accept_encoding":"gzip, deflate, br"},
+    {"name":"Safari iOS 18.0b","impersonate":"safari180_ios","header_order":_SF_IOS,
+     "user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+     "sec_ch_ua":None,"sec_ch_ua_platform":None,"sec_ch_ua_mobile":None,
+     "accept_nav":_SF,"accept_api":"*/*","accept_lang":"en-GB,en;q=0.9","accept_encoding":"gzip, deflate, br"},
 ]
 
-# ── Auto-filter: probe each impersonate value by actually creating a Session ──
-def _probe_impersonate(val: str) -> bool:
-    """Return True if curl_cffi accepts this impersonate string (Session creation)."""
+# ── Auto-filter: keep only profiles whose impersonate string is in BrowserType ─
+# BrowserType enum = what the curl binary actually has fingerprint data for.
+# Session(impersonate=val) silently accepts ANY string; the crash happens on
+# the first real request — so Session() creation is NOT a valid probe.
+def _get_browser_type_values() -> set:
+    """Return the set of valid impersonate strings from the BrowserType enum."""
     try:
-        cffi_requests.Session(impersonate=val)
-        return True
+        _bt = getattr(cffi_requests, "BrowserType", None)
+        if _bt is None:
+            from curl_cffi import BrowserType as _bt2
+            _bt = _bt2
+        return {str(m.value) for m in _bt}
     except Exception:
-        return False
+        return set()
 
+_BT_VALUES = _get_browser_type_values()
 _before = len(TLS_PROFILES)
-TLS_PROFILES = [p for p in TLS_PROFILES if _probe_impersonate(p["impersonate"])]
-_dropped = _before - len(TLS_PROFILES)
-if _dropped:
-    print(f"[profiles] curl_cffi: dropped {_dropped} unsupported profiles. "
-          f"{len(TLS_PROFILES)} profiles active.")
+if _BT_VALUES:
+    TLS_PROFILES = [p for p in TLS_PROFILES if p["impersonate"] in _BT_VALUES]
+    _dropped = _before - len(TLS_PROFILES)
+    if _dropped:
+        print(f"[profiles] BrowserType filter: dropped {_dropped} invalid profiles. "
+              f"{len(TLS_PROFILES)} active.")
+    else:
+        print(f"[profiles] BrowserType filter: all {len(TLS_PROFILES)} profiles valid.")
 else:
-    print(f"[profiles] curl_cffi: all {len(TLS_PROFILES)} profiles active.")
+    print("[profiles] BrowserType unavailable — using all profiles as-is.")
 
 if not TLS_PROFILES:
-    raise RuntimeError("No valid TLS profiles found.")
+    raise RuntimeError("No valid TLS profiles found — check curl_cffi version.")
 
-# Ordered preference list for proxy-validation profile selection
+# Ordered candidates for proxy-validation (best fingerprints first)
 _VALIDATE_PRIORITY = (
-    "chrome133a", "chrome133", "chrome132", "chrome131",
-    "chrome130", "chrome129", "chrome124", "chrome120",
-    "firefox135", "firefox133", "safari18_2", "safari18",
-    "safari_ios_18_1_1", "safari15_5",
+    "chrome133a", "chrome131", "chrome124", "chrome123",
+    "chrome120", "firefox135", "firefox133",
+    "safari18_0", "safari17_0", "safari15_5",
 )
 _active_impersonates = {p["impersonate"] for p in TLS_PROFILES}
-# All candidates in priority order (for runtime fallback in validate_proxy)
 _VALIDATE_CANDIDATES = [
     imp for imp in _VALIDATE_PRIORITY if imp in _active_impersonates
 ] or [TLS_PROFILES[0]["impersonate"]]
-print(f"[profiles] {len(TLS_PROFILES)} active profiles (curl_cffi). "
-      f"Validation candidates: {_VALIDATE_CANDIDATES[:3]}")
+print(f"[profiles] {len(TLS_PROFILES)} active profiles. "
+      f"Validation order: {_VALIDATE_CANDIDATES[:4]}")
 
 _PROXY_TEST_ENDPOINTS = [
     ("https://api.ipify.org?format=json", "json", "ip"),
