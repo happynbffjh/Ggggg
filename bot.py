@@ -364,12 +364,33 @@ TLS_PROFILES = [
     },
 ]
 
+# ── Auto-filter: keep only profiles that curl_cffi actually supports ─────────
+try:
+    from curl_cffi.requests import BrowserType as _BT
+    _SUPPORTED_IMPERSONATE = {e.value for e in _BT}
+except Exception:
+    _SUPPORTED_IMPERSONATE = None
+
+if _SUPPORTED_IMPERSONATE is not None:
+    _before = len(TLS_PROFILES)
+    TLS_PROFILES = [p for p in TLS_PROFILES if p["impersonate"] in _SUPPORTED_IMPERSONATE]
+    _dropped = _before - len(TLS_PROFILES)
+    if _dropped:
+        print(f"[profiles] Dropped {_dropped} unsupported impersonate strings. "
+              f"{len(TLS_PROFILES)} profiles active.")
+
+if not TLS_PROFILES:
+    raise RuntimeError("No valid TLS profiles found for this curl_cffi version.")
+
+# Pick a stable fallback profile for proxy validation (first in filtered list)
+_VALIDATE_PROFILE = TLS_PROFILES[0]["impersonate"]
+
 def validate_proxy(proxy_str):
     proxy_url = parse_proxy(proxy_str)
     if not proxy_url:
         return False, "Could not parse proxy string."
     try:
-        session = cffi_requests.Session(impersonate="chrome133a")
+        session = cffi_requests.Session(impersonate=_VALIDATE_PROFILE)
         session.proxies = {"http": proxy_url, "https": proxy_url}
         r = session.get("https://api.ipify.org?format=json", timeout=10)
         if r.status_code == 200:
@@ -1442,4 +1463,4 @@ def handle_file(msg: Message):
 
 if __name__ == "__main__":
     print(f"[+] Bot started. Polling...")
-    bot.infinity_polling(timeout=30, long_polling_timeout=20)
+    bot.infinity_polling(timeout=30, long_polling_timeout=20, skip_pending=True)
