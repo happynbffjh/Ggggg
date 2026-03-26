@@ -29,11 +29,9 @@ try:
 except Exception:
     HAS_REQUESTS = False
 
-BOT_TOKEN = "7908677074:AAHgRx4MaaBpTFOAU9WmS9QqD3XjsKmTDbw"  # Replace with your actual token
+BOT_TOKEN = "7908677074:AAHgRx4MaaBpTFOAU9WmS9QqD3XjsKmTDbw"  # Your bot token
 
-# Remove the error check or keep it optional:
-if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN not set")
+# No need for error check since we have a hardcoded token
     
 bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 
